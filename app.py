@@ -8,7 +8,7 @@ SECRET_KEY = config('SECRET_KEY')
 FLASK_ENV = config('FLASK_ENV')
 
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('mysql://b7yg6313a3fkrrhl:hrwtway2sa03k18a@uzb4o9e2oe257glt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/vsl7sgj741ptkwil')
 app.secret_key = SECRET_KEY
 
 CORS(app)
