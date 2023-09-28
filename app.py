@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from decouple import config
+import os
 
 SECRET_KEY = config('SECRET_KEY')
 FLASK_ENV = config('FLASK_ENV')
