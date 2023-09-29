@@ -87,12 +87,10 @@ def update_blog(blog_id):
     data = request.form
     blog.title = data['title']
     blog.content = data['content']
-
-    # Actualizar la imagen si se proporciona
-    if 'image' in request.files:
-        image = request.files['image']
-        image.save(os.path.join('static/images', image.filename))
-        blog.image = f'static/images/{image.filename}'
+    
+    # Actualizar la imagen si se proporciona una URL
+    if 'image' in data:
+        blog.image = data['image']
 
     db.session.commit()
 
@@ -101,7 +99,7 @@ def update_blog(blog_id):
         "title": blog.title,
         "content": blog.content,
         "image": blog.image
-    })
+    }), 200
 
 # Ruta para borrar una entrada por su ID
 @app.route('/delete_blog/<int:blog_id>', methods=['DELETE'])
