@@ -20,7 +20,7 @@ class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.String(1000), nullable=False)
-    image = db.Column(db.String(255))
+    image = db.Column(db.String(255), nullable=True)
 
 # Ruta para una página de bienvenida
 @app.route('/welcome', methods=['GET'])
