@@ -58,6 +58,8 @@ def create_blog():
     title = data['title']
     content = data['content']
     image = request.files['image'] if 'image' in request.files else None
+
+    print(request.files) 
     
     # Guardar la imagen si se proporciona
     if image:
