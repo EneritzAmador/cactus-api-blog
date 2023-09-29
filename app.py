@@ -19,8 +19,8 @@ db = SQLAlchemy(app)
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.String(1000), nullable=False)
-    image = db.Column(db.String(255), nullable=True)
+    content = db.Column(db.String(2000), nullable=False)
+    image = db.Column(db.String(1000))
 
 # Ruta para una página de bienvenida
 @app.route('/welcome', methods=['GET'])
@@ -57,14 +57,13 @@ def create_blog():
     data = request.form
     title = data['title']
     content = data['content']
-    image = request.files['image'] if 'image' in request.files else None
+    image = request.form.get('image')
 
     print(request.files) 
     
     # Guardar la imagen si se proporciona
     if image:
-        image.save(os.path.join('static/images', image.filename))
-        image_path = f'static/images/{image.filename}'
+        image_path = image
     else:
         image_path = None
 
