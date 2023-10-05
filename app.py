@@ -2,13 +2,16 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from decouple import config
 from flask_cors import CORS
+import jwt
 import os
 
+#A secret key is established for JWT (JSON Web Tokens)
+SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'claverandom'
 SECRET_KEY = config('SECRET_KEY')
 FLASK_ENV = config('FLASK_ENV')
 
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://b7yg6313a3fkrrhl:hrwtway2sa03k18a@uzb4o9e2oe257glt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/vsl7sgj741ptkwil'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.secret_key = SECRET_KEY
 
 #Allow this API to be accessible from a different origin
