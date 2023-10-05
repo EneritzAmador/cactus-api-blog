@@ -11,23 +11,25 @@ app = Flask(__name__, static_url_path='', static_folder='static', template_folde
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://b7yg6313a3fkrrhl:hrwtway2sa03k18a@uzb4o9e2oe257glt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/vsl7sgj741ptkwil'
 app.secret_key = SECRET_KEY
 
+#Allow this API to be accessible from a different origin
 CORS(app)
 
 db = SQLAlchemy(app)
 
-# Define tu modelo de datos (por ejemplo, para un blog)
+# Defining a data model (BlogsPost)
+#Create a template for blog posts, with an id, title, content, and a path to an image.
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.String(2000), nullable=False)
     image = db.Column(db.String(1000))
 
-# Ruta para una página de bienvenida
+# Route to a welcome page
 @app.route('/welcome', methods=['GET'])
 def welcome():
     return "¡Hola! Tu Api Blog funciona."
 
-# Ruta para obtener todas las entradas
+# Route to get all entries
 @app.route('/getblogs', methods=['GET'])
 def get_blogs():
     blogs = BlogPost.query.all()
@@ -38,7 +40,7 @@ def get_blogs():
         "image": blog.image
     } for blog in blogs])
 
-# Ruta para obtener una entrada por su ID
+# Route to get an entry by your ID
 @app.route('/getblogs/<int:blog_id>', methods=['GET'])
 def get_blog(blog_id):
     blog = BlogPost.query.get(blog_id)
@@ -51,7 +53,7 @@ def get_blog(blog_id):
         "image": blog.image
     })
 
-# Ruta para crear una nueva entrada
+# Route to create a new entry
 @app.route('/create_blog', methods=['POST'])
 def create_blog():
     data = request.form
@@ -61,7 +63,7 @@ def create_blog():
 
     print(request.files) 
     
-    # Guardar la imagen si se proporciona
+    # Save the image if the user wants
     if image:
         image_path = image
     else:
@@ -78,7 +80,7 @@ def create_blog():
         "image": new_blog.image
     }), 201
 
-# Ruta para actualizar una entrada por su ID
+# Route to update an entry by its ID
 @app.route('/update_blog/<int:blog_id>', methods=['PUT'])
 def update_blog(blog_id):
     blog = BlogPost.query.get(blog_id)
@@ -89,7 +91,7 @@ def update_blog(blog_id):
     blog.title = data['title']
     blog.content = data['content']
     
-    # Actualizar la imagen si se proporciona una URL
+    # Update image if a URL is provided
     if 'image' in data:
         blog.image = data['image']
 
@@ -102,7 +104,7 @@ def update_blog(blog_id):
         "image": blog.image
     }), 200
 
-# Ruta para borrar una entrada por su ID
+# Route to delete an entry by its ID
 @app.route('/delete_blog/<int:blog_id>', methods=['DELETE'])
 def delete_blog(blog_id):
     blog = BlogPost.query.get(blog_id)
